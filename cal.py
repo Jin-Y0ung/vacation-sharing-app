@@ -37,26 +37,6 @@ def delete_data(index):
 # 앱 제목
 st.title("Qcells DP Team Time Off Schedule")
 
-# 휴가 추가 폼
-st.header("Add Time Off")
-with st.form("vacation_form"):
-    name = st.text_input("Name")
-    start_date = st.date_input("Start Date of Time Off")
-    start_time = st.time_input("Start Time of Time Off")
-    end_date = st.date_input("End Date of Time Off")
-    end_time = st.time_input("End Time of Time Off")
-    description = st.text_area("Description (Optional)")
-    submit_button = st.form_submit_button("Add your time off")
-
-    if submit_button:
-        start_datetime = datetime.combine(start_date, start_time).isoformat()
-        end_datetime = datetime.combine(end_date, end_time).isoformat()
-        if start_datetime > end_datetime:
-            st.error("Start date/time cannot be later than the end date/time.")
-        else:
-            add_data(name, start_datetime, end_datetime, description)
-            st.success("Added successfully!")
-
 # 데이터 로드
 st.header("Calander")
 data = load_data()
@@ -93,6 +73,27 @@ calendar_options = {
 }
 
 calendar_response = calendar(events=calendar_events, options=calendar_options)
+
+# 휴가 추가 폼
+st.header("Add Time Off")
+with st.form("vacation_form"):
+    name = st.text_input("Name")
+    start_date = st.date_input("Start Date of Time Off")
+    start_time = st.time_input("Start Time of Time Off")
+    end_date = st.date_input("End Date of Time Off")
+    end_time = st.time_input("End Time of Time Off")
+    description = st.text_area("Description (Optional)")
+    submit_button = st.form_submit_button("Add your time off")
+
+    if submit_button:
+        start_datetime = datetime.combine(start_date, start_time).isoformat()
+        end_datetime = datetime.combine(end_date, end_time).isoformat()
+        if start_datetime > end_datetime:
+            st.error("Start date/time cannot be later than the end date/time.")
+        else:
+            add_data(name, start_datetime, end_datetime, description)
+            st.success("Added successfully!")
+
 
 st.markdown(
     "[View or Modify the schedule in Google Sheets](https://docs.google.com/spreadsheets/d/16SKKKKYU-z9il5GILvPV3uyjQRbNSvipOuLMyUD6XkI/edit?usp=sharing)"
