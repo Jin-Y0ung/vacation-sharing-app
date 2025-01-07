@@ -93,3 +93,7 @@ calendar_options = {
 }
 
 calendar_response = calendar(events=calendar_events, options=calendar_options)
+
+st.markdown(
+    "[View or Modify the schedule in Google Sheets](https://docs.google.com/spreadsheets/d/16SKKKKYU-z9il5GILvPV3uyjQRbNSvipOuLMyUD6XkI/edit?usp=sharing)"
+)
