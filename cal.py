@@ -7,30 +7,38 @@ import pandas as pd
 
 # Google Sheets 인증 설정
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-CREDENTIALS_FILE = "credentials.json"  # 다운로드한 JSON 키 파일
-SPREADSHEET_NAME = "qcells schedule"  # 사용할 Google Sheet 이름
-
-credentials = st.secrets["GOOGLE_SHEETS_CREDENTIALS"]
+SPREADSHEET_NAME = "qcells schedule"
 
 # Google Sheets 인증
+credentials = st.secrets["GOOGLE_SHEETS_CREDENTIALS"]
 client = gspread.authorize(
     ServiceAccountCredentials.from_json_keyfile_dict(
-        dict(credentials),
-        ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        credentials,
+        SCOPE
     )
 )
 
 # Google Sheet에 연결
-sheet = client.open(SPREADSHEET_NAME).sheet1
+try:
+    sheet = client.open(SPREADSHEET_NAME).sheet1
+except Exception as e:
+    st.error(f"Google Sheet 연결 실패: {e}")
 
 # Google Sheet에서 데이터 읽기
 def load_data():
-    data = sheet.get_all_records()
-    return pd.DataFrame(data)
+    try:
+        data = sheet.get_all_records()
+        return pd.DataFrame(data)
+    except Exception as e:
+        st.error(f"데이터 로드 실패: {e}")
+        return pd.DataFrame()
 
 # Google Sheet에 데이터 추가
 def add_data(name, start_date, end_date, description):
-    sheet.append_row([name, start_date, end_date, description])
+    try:
+        sheet.append_row([name, start_date, end_date, description])
+    except Exception as e:
+        st.error(f"데이터 추가 실패: {e}")
 
 # 앱 제목
 st.title("사내 휴가 공유 웹 앱")
