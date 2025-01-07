@@ -9,4 +9,3 @@ python-dateutil==2.8.2
 validators==0.34.0
 requests==2.31.0
 tzdata==2023.3
-ß
