@@ -31,6 +31,9 @@ def load_data():
 def add_data(name, start_date, end_date, description):
     sheet.append_row([name, start_date, end_date, description])
 
+def delete_data(index):
+    sheet.delete_row(index + 2)
+
 # 앱 제목
 st.title("Qcells DP Team Time Off Schedule")
 
@@ -49,10 +52,10 @@ with st.form("vacation_form"):
         start_datetime = datetime.combine(start_date, start_time).isoformat()
         end_datetime = datetime.combine(end_date, end_time).isoformat()
         if start_datetime > end_datetime:
-            st.error("시작 날짜/시간이 종료 날짜/시간보다 늦을 수 없습니다.")
+            st.error("Start date/time cannot be later than the end date/time.")
         else:
             add_data(name, start_datetime, end_datetime, description)
-            st.success("휴가가 성공적으로 추가되었습니다!")
+            st.success("Added successfully!")
 
 # 데이터 로드
 st.header("Calander")
@@ -90,3 +93,16 @@ calendar_options = {
 }
 
 calendar_response = calendar(events=calendar_events, options=calendar_options)
+
+st.header("Vacation List")
+data = load_data()
+
+if not data.empty:
+    st.dataframe(data)
+    delete_option = st.selectbox("Select a time off to delete", data.index, format_func=lambda x: data.loc[x, "name"])
+    if st.button("Delete time off"):
+        delete_data(delete_option)
+        st.success("Deleted successfully.")
+        st.experimental_rerun()  # Refresh the page to update
+else:
+    st.write("No time off have been added yet.")
