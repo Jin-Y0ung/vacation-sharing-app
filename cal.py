@@ -55,7 +55,7 @@ with st.form("vacation_form"):
             st.success("휴가가 성공적으로 추가되었습니다!")
 
 # 데이터 로드
-st.header("휴가 캘린더")
+st.header("Calander")
 data = load_data()
 
 if not data.empty:
