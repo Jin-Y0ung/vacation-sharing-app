@@ -93,16 +93,3 @@ calendar_options = {
 }
 
 calendar_response = calendar(events=calendar_events, options=calendar_options)
-
-st.header("Vacation List")
-data = load_data()
-
-if not data.empty:
-    st.dataframe(data)
-    delete_option = st.selectbox("Select a time off to delete", data.index, format_func=lambda x: data.loc[x, "name"])
-    if st.button("Delete time off"):
-        delete_data(delete_option)
-        st.success("Deleted successfully.")
-        st.experimental_rerun()  # Refresh the page to update
-else:
-    st.write("No time off have been added yet.")
