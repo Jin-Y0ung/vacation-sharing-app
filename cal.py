@@ -58,9 +58,6 @@ with st.form("vacation_form"):
 st.header("휴가 캘린더")
 data = load_data()
 
-# 디버깅: Google Sheets에서 가져온 데이터 출력
-st.write("Google Sheets에서 가져온 데이터:", data)
-
 if not data.empty:
     try:
         calendar_events = [
@@ -72,7 +69,6 @@ if not data.empty:
             }
             for _, row in data.iterrows()
         ]
-        st.write("캘린더 이벤트:", calendar_events)  # 디버깅용 출력
     except KeyError as e:
         st.error(f"데이터에 필요한 열이 없습니다: {e}")
         calendar_events = []
@@ -94,4 +90,3 @@ calendar_options = {
 }
 
 calendar_response = calendar(events=calendar_events, options=calendar_options)
-st.write("캘린더 상호작용:", calendar_response)
