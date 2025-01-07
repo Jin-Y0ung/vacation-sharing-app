@@ -10,8 +10,15 @@ SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 CREDENTIALS_FILE = "credentials.json"  # 다운로드한 JSON 키 파일
 SPREADSHEET_NAME = "qcells schedule"  # 사용할 Google Sheet 이름
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, SCOPE)
-client = gspread.authorize(credentials)
+credentials = st.secrets["GOOGLE_SHEETS_CREDENTIALS"]
+
+# Google Sheets 인증
+client = gspread.authorize(
+    ServiceAccountCredentials.from_json_keyfile_dict(
+        dict(credentials),
+        ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    )
+)
 
 # Google Sheet에 연결
 sheet = client.open(SPREADSHEET_NAME).sheet1
