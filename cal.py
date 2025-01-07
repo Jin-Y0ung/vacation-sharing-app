@@ -32,18 +32,18 @@ def add_data(name, start_date, end_date, description):
     sheet.append_row([name, start_date, end_date, description])
 
 # 앱 제목
-st.title("사내 휴가 공유 웹 앱")
+st.title("Qcells DP Team Time Off Schedule")
 
 # 휴가 추가 폼
-st.header("휴가 등록하기")
+st.header("Add Time Off")
 with st.form("vacation_form"):
-    name = st.text_input("이름을 입력하세요")
-    start_date = st.date_input("휴가 시작 날짜")
-    start_time = st.time_input("휴가 시작 시간")
-    end_date = st.date_input("휴가 끝나는 날짜")
-    end_time = st.time_input("휴가 끝나는 시간")
-    description = st.text_area("휴가 설명 (선택 사항)")
-    submit_button = st.form_submit_button("휴가 추가")
+    name = st.text_input("Name")
+    start_date = st.date_input("Start Date of Time Off")
+    start_time = st.time_input("Start Time of Time Off")
+    end_date = st.date_input("End Date of Time Off")
+    end_time = st.time_input("End Time of Time Off")
+    description = st.text_area("Description (Optional)")
+    submit_button = st.form_submit_button("Add your time off")
 
     if submit_button:
         start_datetime = datetime.combine(start_date, start_time).isoformat()
@@ -70,10 +70,10 @@ if not data.empty:
             for _, row in data.iterrows()
         ]
     except KeyError as e:
-        st.error(f"데이터에 필요한 열이 없습니다: {e}")
+        st.error(f"Keyerror {e}")
         calendar_events = []
     except Exception as e:
-        st.error(f"캘린더 데이터 처리 중 오류 발생: {e}")
+        st.error(f"Data Error {e}")
         calendar_events = []
 else:
     calendar_events = []
